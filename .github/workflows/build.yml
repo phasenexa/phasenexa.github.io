@@ -76,10 +76,11 @@ jobs:
 
             The sibling repositories have been cloned into .repos/ - analyse each one:
             1. Read their README.md, CHANGELOG.md, pyproject.toml or go.mod, and source code
-            2. Update the corresponding libraries/*.md page with current, accurate information as well as getting-started.md and index.md if these are out-dated
-            3. Keep the existing page structure and Retype frontmatter
-            4. Update version numbers, feature lists, and code examples if they have changed
-            5. Do NOT change index.md marketing copy, premium.md, or community.md unless instructed
+            2. Update the corresponding libraries/*.md page with current, accurate information
+            3. Update getting-started.md and index.md where needed
+            4. Keep the existing page structure and Retype frontmatter
+            5. Update version numbers, feature lists, and code examples if they have changed
+            6. Do NOT change index.md marketing copy, premium.md, or community.md unless instructed
 
             If a repo directory in .repos/ has no corresponding libraries/ page yet, create one
             following the pattern of existing library pages.
@@ -91,7 +92,6 @@ jobs:
             - Use British English spelling
             - All code examples must be realistic and correct
             - Follow the Phase Nexa styling guidelines in CLAUDE.md
-            - Remove anything which doesn't exist
           claude_args: |
             --model ${{ inputs.model }}
             --max-turns 30
