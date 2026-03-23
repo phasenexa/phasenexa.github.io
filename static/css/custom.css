@@ -1,0 +1,92 @@
+/* Phase Nexa - Custom Styles for Retype
+ * Colour system from Phase Nexa Styling Guidelines v1.0
+ * Typography: Inter (interface), JetBrains Mono (data/code)
+ */
+
+/* Typography overrides */
+body,
+.markdown-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+code,
+pre,
+.code,
+kbd {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-feature-settings: "liga" on, "calt" on;
+}
+
+/* Code block styling - dark theme */
+[data-theme="dark"] pre,
+[data-theme="dark"] code {
+  background-color: #0A1E36;
+}
+
+/* Hero section utility - used on index.md */
+.hero-section {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-tagline {
+  font-size: 1.25rem;
+  opacity: 0.85;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* Accent colour utilities */
+.text-violet { color: #8A6CFF; }
+.text-cyan { color: #00E5FF; }
+.text-gold { color: #FFD700; }
+.text-mint { color: #4DFFC3; }
+.text-coral { color: #FF6B6B; }
+
+/* Badge overrides for Phase Nexa palette */
+.badge-violet {
+  background-color: #8A6CFF;
+  color: #FFFFFF;
+}
+
+.badge-cyan {
+  background-color: #00E5FF;
+  color: #0A1E36;
+}
+
+/* Install command block styling */
+.install-block {
+  background-color: #0A1E36;
+  border: 1px solid #122F4D;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+/* Subtle glow effect for primary CTA links in dark mode */
+[data-theme="dark"] a.btn-primary,
+[data-theme="dark"] .callout-primary a {
+  text-shadow: 0 0 20px rgba(138, 108, 255, 0.3);
+}
+
+/* Tighter spacing for data tables */
+.markdown-body table td,
+.markdown-body table th {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Monospace for table cells containing data */
+.data-table td {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
