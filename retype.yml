@@ -1,0 +1,62 @@
+input: .
+output: .retype
+url: phasenexa.github.io
+
+branding:
+  title: Phase Nexa
+  label: Docs
+  logo: static/images/logo.png
+  logoDark: static/images/logo.png
+  logoHeight: 36
+  colors:
+    label:
+      text: "#FFFFFF"
+      background: "#8A6CFF"
+
+links:
+  - text: GitHub
+    link: https://github.com/phasenexa
+    icon: mark-github
+  - text: Get Started
+    link: /getting-started/
+
+footer:
+  copyright: "&copy; Phase Nexa {{ year }}. MIT Licensed."
+
+theme:
+  base:
+    base-color: "#8A6CFF"
+    base-bg: "#f8f9fa"
+    primary: "#8A6CFF"
+    success: "#4DFFC3"
+    danger: "#FF4D6A"
+    warning: "#FFAA33"
+  dark:
+    base-color: "#8A6CFF"
+    base-bg: "#0E2A47"
+    base-text: "#E2E8F0"
+    heading-text: "#FFFFFF"
+    sidebar-left-bg: "#0A1E36"
+    primary: "#8A6CFF"
+    success: "#4DFFC3"
+    danger: "#FF4D6A"
+    warning: "#FFAA33"
+
+snippets:
+  lineNumbers:
+    - python
+    - go
+    - typescript
+    - yaml
+
+search:
+  minChars: 2
+  maxResults: 15
+
+exclude:
+  - .repos/
+  - node_modules/
+  - .retype/
+  - "*.tmp"
+  - CLAUDE.md
+  - GITHUB_SETUP.md

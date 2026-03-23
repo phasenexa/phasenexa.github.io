@@ -1,0 +1,110 @@
+# Build and deploy the Phase Nexa website.
+#
+# Manually triggered. Optionally runs Claude Code to analyse sibling
+# repositories and update library documentation before building.
+
+name: Build & Deploy Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      update_content:
+        description: "Run Claude Code to update library docs from repos"
+        type: boolean
+        default: true
+      model:
+        description: "Claude model to use for content updates"
+        type: choice
+        options:
+          - claude-sonnet-4-6
+          - claude-opus-4-6
+        default: claude-sonnet-4-6
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # ---------------------------------------------------------------
+      # Clone all Phase Nexa repositories (except this website)
+      # ---------------------------------------------------------------
+      - name: Discover and clone sibling repos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .repos
+          echo "Discovering repositories in phasenexa org..."
+
+          repos=$(gh repo list phasenexa --json name --jq '.[].name' 2>/dev/null || echo "")
+
+          if [ -z "$repos" ]; then
+            echo "No repos found via API, falling back to known list"
+            repos="nexa-marketdata nexa-bidkit nexa-connect nexa-mcp"
+          fi
+
+          for repo in $repos; do
+            # Skip the website repo itself
+            if [ "$repo" = "phasenexa.github.io" ]; then
+              continue
+            fi
+            echo "Cloning $repo..."
+            git clone --depth 1 "https://github.com/phasenexa/${repo}.git" ".repos/${repo}" 2>/dev/null || \
+              echo "Warning: could not clone $repo (may not exist yet)"
+          done
+
+          echo "Cloned repos:"
+          ls -1 .repos/ 2>/dev/null || echo "(none)"
+
+      # ---------------------------------------------------------------
+      # Run Claude Code to update content from repos
+      # ---------------------------------------------------------------
+      - name: Update content with Claude Code
+        if: inputs.update_content
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are updating the Phase Nexa website. Read CLAUDE.md for full instructions.
+
+            The sibling repositories have been cloned into .repos/ - analyse each one:
+            1. Read their README.md, CHANGELOG.md, pyproject.toml or go.mod, and source code
+            2. Update the corresponding libraries/*.md page with current, accurate information
+            3. Keep the existing page structure and Retype frontmatter
+            4. Update version numbers, feature lists, and code examples if they have changed
+            5. Do NOT change index.md marketing copy, premium.md, or community.md unless instructed
+
+            If a repo directory in .repos/ has no corresponding libraries/ page yet, create one
+            following the pattern of existing library pages.
+
+            After updating, commit your changes to the current branch with the message:
+            "docs: update library pages from repo analysis"
+
+            Important:
+            - Use British English spelling
+            - All code examples must be realistic and correct
+            - Follow the Phase Nexa styling guidelines in CLAUDE.md
+          claude_args: |
+            --model ${{ inputs.model }}
+            --max-turns 30
+            --allowedTools "Read,Write,Edit,Bash(git:*),Bash(ls:*),Bash(cat:*),Bash(find:*),Bash(head:*),Bash(tail:*),Bash(grep:*),Bash(wc:*)"
+
+      # ---------------------------------------------------------------
+      # Build with Retype
+      # ---------------------------------------------------------------
+      - name: Build Retype website
+        uses: retypeapp/action-build@latest
+
+      # ---------------------------------------------------------------
+      # Deploy to retype branch for GitHub Pages
+      # ---------------------------------------------------------------
+      - name: Deploy to GitHub Pages
+        uses: retypeapp/action-github-pages@latest
+        with:
+          update-branch: true
