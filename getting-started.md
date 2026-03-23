@@ -101,45 +101,6 @@ if not errors:
     # Send xml_bytes via your ECP/EDX endpoint
 ```
 
-+++ Exchange Connectivity
-
-**nexa-connect** is for teams building or maintaining direct exchange connections.
-
-```bash
-go get github.com/phasenexa/nexa-connect
-```
-
-```go
-package main
-
-import (
-    "context"
-    "log"
-
-    "github.com/phasenexa/nexa-connect/nordpool"
-)
-
-func main() {
-    client, err := nordpool.NewClient(nordpool.Config{
-        APIKey:  "your-api-key",
-        BaseURL: "https://api.nordpoolgroup.com/v2",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    ctx := context.Background()
-    markets, err := client.ListMarkets(ctx)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    for _, m := range markets {
-        log.Printf("Market: %s (%s)", m.Name, m.ID)
-    }
-}
-```
-
 +++
 
 ---
@@ -150,9 +111,7 @@ func main() {
 |-----------------|------------|-----------------|
 | nexa-marketdata | Python     | 3.10+           |
 | nexa-bidkit     | Python     | 3.10+           |
-| nexa-connect    | Go         | 1.21+           |
 | nexa-mfrr-nordic-eam | Python | 3.11+           |
-| nexa-mcp        | Python     | 3.10+           |
 
 ---
 

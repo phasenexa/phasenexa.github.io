@@ -65,15 +65,6 @@ pip install nexa-mfrr-nordic-eam
 [Learn more](/libraries/nexa-mfrr-nordic-eam/) | [GitHub](https://github.com/phasenexa/nexa-mfrr-nordic-eam)
 :::
 
-:::content
-
-### Coming soon: nexa-connect and nexa-mcp
-
-**nexa-connect** -- exchange connectivity SDK with FIX protocol, REST/WebSocket connections to Nord Pool, EPEX SPOT, and EEX.
-
-**nexa-mcp** -- MCP server exposing Phase Nexa data and tools to LLM clients.
-:::
-
 ---
 
 ## Why now
