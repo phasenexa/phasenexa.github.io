@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827580333683">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827581360344">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>nexa-mfrr-nordic-eam</title>
     <meta name="title" content="nexa-mfrr-nordic-eam">
-    <meta name="description" content="Python library for building and submitting mFRR energy activation market bids to Nordic TSOs.">
+    <meta name="description" content="Python library for building, validating, and serialising mFRR energy activation market bids for Nordic TSOs.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://phasenexa.github.io/libraries/nexa-mfrr-nordic-eam/">
@@ -21,7 +21,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://phasenexa.github.io/libraries/nexa-mfrr-nordic-eam/">
     <meta property="og:title" content="nexa-mfrr-nordic-eam">
-    <meta property="og:description" content="Python library for building and submitting mFRR energy activation market bids to Nordic TSOs.">
+    <meta property="og:description" content="Python library for building, validating, and serialising mFRR energy activation market bids for Nordic TSOs.">
     <meta property="og:site_name" content="Phase Nexa">
     <meta property="og:locale" content="en_US">
 
@@ -29,16 +29,16 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://phasenexa.github.io/libraries/nexa-mfrr-nordic-eam/">
     <meta name="twitter:title" content="nexa-mfrr-nordic-eam">
-    <meta name="twitter:description" content="Python library for building and submitting mFRR energy activation market bids to Nordic TSOs.">
+    <meta name="twitter:description" content="Python library for building, validating, and serialising mFRR energy activation market bids for Nordic TSOs.">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.3.0.827580333683" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.3.0.827581360344" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827580333683" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827581360344" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -169,138 +169,58 @@
                 <div id="retype-sidebar-right-toggle"></div>
                 <!-- Page content  -->
 <h1 id="nexa-mfrr-nordic-eam">nexa-mfrr-nordic-eam</h1>
-<div id="retype-page-description" class="description-display text-description font-description leading-description mb-description-margin-bottom mt-description-margin-top tracking-description text-transform-description">Python library for building and submitting mFRR energy activation market bids to Nordic TSOs.</div>
-<p>Python library for building, validating, and serialising mFRR energy activation market (EAM) bids for the four Nordic TSOs: Statnett (Norway), Fingrid (Finland), Energinet (Denmark), and Svenska kraftnat (Sweden).</p>
+<div id="retype-page-description" class="description-display text-description font-description leading-description mb-description-margin-bottom mt-description-margin-top tracking-description text-transform-description">Python library for building, validating, and serialising mFRR energy activation market bids for Nordic TSOs.</div>
+<p>Python library for building, validating, and serialising mFRR energy activation market bids for the Nordic TSOs (Statnett, Svenska kraftnät, Energinet, Fingrid). Handles the full bid lifecycle from construction to CIM XML serialisation for BSPs who build their own systems.</p>
 <p><span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-info-text bg-badge-info border border-badge-info-border h-6 px-2 text-xs rounded-md">
     <span>Python 3.11+</span>
 </span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-light-text bg-badge-light border border-badge-light-border h-6 px-2 text-xs rounded-md">
     <span>MIT License</span>
 </span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-warning-text bg-badge-warning border border-badge-warning-border h-6 px-2 text-xs rounded-md">
-    <span>0.4.0b1 — Pre-Alpha</span>
+    <span>Pre-release 0.4.0b1</span>
 </span></p>
-<div id="nexa-mfrr-nordic-eam-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-bash"><code v-pre class="language-bash">pip install nexa-mfrr-nordic-eam</code></pre>
+<div id="nexa-mfrr-nordic-eam-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-mfrr-nordic-eam</code></pre>
 </doc-codeblock></div>
-<p>With optional pandas support:</p>
-<div id="nexa-mfrr-nordic-eam-code-2" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-bash"><code v-pre class="language-bash">pip install nexa-mfrr-nordic-eam[pandas]</code></pre>
-</doc-codeblock></div>
-<p><a href="https://github.com/phasenexa/nexa-mfrr-nordic-eam">GitHub</a></p>
-<hr>
-<h2 id="what-it-does">What it does</h2>
-<p>The Nordic mFRR energy activation market went live on 4 March 2025 as part of the Nordic Balancing Model (NBM). BSPs (Balancing Service Providers) submit bids to their connecting TSO via CIM XML documents over ECP/EDX.</p>
-<p>This library handles the BSP side of that workflow:</p>
-<ul>
-<li><strong>Build simple bids</strong> — divisible and indivisible bids with full attribute support</li>
-<li><strong>Complex bid groups</strong> — <code translate="no" v-pre>ExclusiveGroup</code>, <code translate="no" v-pre>MultipartGroup</code>, <code translate="no" v-pre>InclusiveGroup</code> with group-level validation</li>
-<li><strong>Technically linked bids</strong> — <code translate="no" v-pre>TechnicalLink</code> builder prevents double-activation across consecutive MTUs</li>
-<li><strong>Conditionally linked bids</strong> — adjust availability in QH0 based on activation outcome in QH-1 or QH-2</li>
-<li><strong>TSO configuration</strong> — Statnett (NO), Svenska kraftnat (SE), and Energinet (DK) fully configured</li>
-<li><strong>Validate before you send</strong> — common and TSO-configurable rules, pre-MARI and post-MARI price limits</li>
-<li><strong>Serialise to CIM XML</strong> — generates compliant <code translate="no" v-pre>ReserveBid_MarketDocument</code> XML per the NBM schema</li>
-<li><strong>Timing helpers</strong> — gate closure calculations, MTU boundaries, DST handling, MARI vs pre-MARI timing</li>
-</ul>
-<p>What it does <strong>not</strong> do: manage your ECP/EDX endpoint. That is infrastructure you deploy and operate separately. This library generates the XML documents you send through your endpoint.</p>
-<hr>
-<h2 id="implementation-status">Implementation status</h2>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Module</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Core types and exceptions</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Global config (MARI mode)</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Timing helpers</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Simple bid builder</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Bid validation</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Complex groups (Exclusive, Multipart, Inclusive)</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Technically linked bids</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>Conditionally linked bids</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>CIM XML serialisation</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>TSO config — Statnett (NO)</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>TSO config — Energinet (DK)</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>TSO config — Svenska kraftnat (SE)</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>TSO config — Fingrid (FI)</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>Activation document parser</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>Acknowledgement parser</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>Bid availability parser</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>Heartbeat handling</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>Pandas integration</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td>CIM XML deserialiser</td>
-<td>Planned</td>
-</tr>
-</tbody>
-</table>
+<p><a href="https://github.com/phasenexa/nexa-mfrr-nordic-eam">GitHub</a> | <a href="https://pypi.org/project/nexa-mfrr-nordic-eam/">PyPI</a></p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-primary" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>warning Work in progress</h5>
+<p>The API, documentation, and feature set are under active development and subject to change.</p>
+        </div>
+    </div>
 </div>
 <hr>
+<h2 id="why-this-exists">Why this exists</h2>
+<p>Submitting mFRR bids to Nordic TSOs requires producing CIM XML documents that conform to the NBM ReserveBid schema. Every BSP building their own trading system ends up writing the same serialisation code, the same gate closure calculations, and the same TSO-specific validation logic.</p>
+<p>nexa-mfrr-nordic-eam handles that infrastructure so you can focus on strategy:</p>
+<ul>
+<li><strong>Correct domain model</strong> for ENTSO-E mFRR bid types: simple, linked, exclusive groups, multipart, inclusive groups</li>
+<li><strong>TSO-specific validation</strong> before you send, not after the TSO rejects you</li>
+<li><strong>CIM XML serialisation</strong> with correct XSD element ordering and namespace handling</li>
+<li><strong>Gate closure calculations</strong> with DST awareness and pre/post-MARI timing</li>
+<li><strong>Fluent builder API</strong> that makes bid construction readable and type-safe</li>
+</ul>
+<hr>
 <h2 id="quick-start">Quick start</h2>
-<h3 id="submit-a-simple-divisible-bid-to-statnett">Submit a simple divisible bid to Statnett</h3>
-<div id="submit-a-simple-divisible-bid-to-statnett-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import (
-    Bid, BidDocument, BiddingZone, Direction,
-    MarketProductType, TSO, MARIMode,
+<div id="quick-start-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from datetime import datetime, timezone
+from nexa_mfrr_eam import (
+    Bid, BidDocument, Direction, MarketProductType,
+    BiddingZone, TSO, MARIMode,
 )
 
-# Build a 50 MW up-regulation bid
+# Create a simple divisible up-regulation bid
 bid = (
     Bid.up(volume_mw=50, price_eur=85.50)
     .divisible(min_volume_mw=10)
@@ -310,7 +230,7 @@ bid = (
     .build()
 )
 
-# Wrap in a document and target Statnett
+# Wrap in a document targeting Statnett
 doc = (
     BidDocument(tso=TSO.STATNETT)
     .sender(party_id=&quot;9999909919920&quot;, coding_scheme=&quot;A10&quot;)
@@ -318,18 +238,50 @@ doc = (
     .build()
 )
 
-# Validate against Statnett-specific rules
+# Validate, then serialise to CIM XML
 errors = doc.validate(mari_mode=MARIMode.PRE_MARI)
-if errors:
-    for e in errors:
-        print(f&quot;  {e}&quot;)
-else:
+if not errors:
     xml_bytes = doc.to_xml()
-    # Send xml_bytes via your ECP endpoint to Statnett</code></pre>
+    # Send xml_bytes via your ECP/EDX endpoint</code></pre>
 </doc-codeblock></div>
-<h3 id="build-a-multipart-bid-multiple-price-levels-same-mtu">Build a multipart bid (multiple price levels, same MTU)</h3>
-<div id="build-a-multipart-bid-multiple-price-levels-same-mtu-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import MultipartGroup, BiddingZone, Direction, MarketProductType
+<hr>
+<h2 id="supported-bid-types">Supported bid types</h2>
+<h3 id="simple-bids">Simple bids</h3>
+<p>Divisible and indivisible bids with full attribute support:</p>
+<div id="simple-bids-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python"># Divisible down-regulation bid with minimum volume
+bid = (
+    Bid.down(volume_mw=30, price_eur=40.00)
+    .divisible(min_volume_mw=5)
+    .for_mtu(&quot;2026-03-21T10:00Z&quot;)
+    .resource(&quot;NOKG90901&quot;, coding_scheme=&quot;NNO&quot;)
+    .build()
+)</code></pre>
+</doc-codeblock></div>
+<h3 id="technically-linked-bids">Technically linked bids</h3>
+<p>Link bids across MTUs to prevent double-activation:</p>
+<div id="technically-linked-bids-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import TechnicalLink, Direction, MarketProductType, BiddingZone
+
+link = (
+    TechnicalLink(bidding_zone=BiddingZone.SE3)
+    .resource(&quot;REG-OBJ-SE-001&quot;, coding_scheme=&quot;A01&quot;)
+    .add_mtu(
+        mtu=&quot;2026-03-21T10:00Z&quot;,
+        direction=Direction.UP,
+        volume_mw=25,
+        price_eur=90.00,
+        product_type=MarketProductType.SCHEDULED_AND_DIRECT,
+    )
+    .add_mtu(&quot;2026-03-21T10:15Z&quot;, Direction.UP, 25, 90.00)
+    .add_mtu(&quot;2026-03-21T10:30Z&quot;, Direction.UP, 25, 90.00)
+    .build()
+)</code></pre>
+</doc-codeblock></div>
+<h3 id="complex-bid-groups">Complex bid groups</h3>
+<p>Exclusive, multipart, and inclusive groups for more complex strategies:</p>
+<div id="complex-bid-groups-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import MultipartGroup, BiddingZone
 
 group = (
     MultipartGroup(bidding_zone=BiddingZone.NO2)
@@ -342,38 +294,11 @@ group = (
     .build()
 )</code></pre>
 </doc-codeblock></div>
-<p>If the highest-priced component is accepted, all cheaper components are also accepted. All components must have different prices.</p>
-<h3 id="build-technically-linked-bids-across-mtus">Build technically linked bids across MTUs</h3>
-<p>Technical linking prevents double-activation when a bid in one MTU is activated via direct activation and the resource is still ramping during the next MTU.</p>
-<div id="build-technically-linked-bids-across-mtus-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import TechnicalLink, BiddingZone, Direction, MarketProductType
+<h3 id="conditional-linking">Conditional linking</h3>
+<p>Three condition codes supported (A55, A56, A67):</p>
+<div id="conditional-linking-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import ConditionalStatus
 
-link = (
-    TechnicalLink(bidding_zone=BiddingZone.SE3)
-    .resource(&quot;REG-OBJ-SE-001&quot;, coding_scheme=&quot;A01&quot;)
-    .add_mtu(
-        mtu=&quot;2026-03-21T10:00Z&quot;,
-        direction=Direction.UP,
-        volume_mw=25,
-        price_eur=90.00,
-        product_type=MarketProductType.SCHEDULED_AND_DIRECT,
-    )
-    .add_mtu(
-        mtu=&quot;2026-03-21T10:15Z&quot;,
-        direction=Direction.UP,
-        volume_mw=25,
-        price_eur=90.00,
-        product_type=MarketProductType.SCHEDULED_AND_DIRECT,
-    )
-    .build()
-)</code></pre>
-</doc-codeblock></div>
-<h3 id="build-conditionally-linked-bids">Build conditionally linked bids</h3>
-<p>Conditional linking adjusts availability in QH0 based on what happened in QH-1 or QH-2.</p>
-<div id="build-conditionally-linked-bids-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import Bid, ConditionalStatus, BiddingZone
-
-# QH-1 bid
 bid_qh_minus_1 = (
     Bid.up(volume_mw=30, price_eur=70.00)
     .divisible(min_volume_mw=5)
@@ -382,7 +307,6 @@ bid_qh_minus_1 = (
     .build()
 )
 
-# QH0 bid: unavailable if QH-1 was activated
 bid_qh_0 = (
     Bid.up(volume_mw=30, price_eur=70.00)
     .divisible(min_volume_mw=5)
@@ -394,57 +318,196 @@ bid_qh_0 = (
 )</code></pre>
 </doc-codeblock></div>
 <hr>
-<h2 id="domain-context">Domain context</h2>
-<p>The mFRR EAM operates on 15-minute Market Time Units (MTUs). There are 96 MTUs per day. BSPs submit bids to their connecting TSO; the TSO forwards them to the Activation Optimisation Function (AOF), which selects bids for activation.</p>
-<p><strong>Pre-MARI gate closure times:</strong></p>
-<ul>
-<li>BSP GCT: QH-45 (45 minutes before the quarter-hour)</li>
-<li>TSO GCT: QH-15</li>
-<li>AOF run: QH-14</li>
-<li>Activation orders to BSPs: QH-7.5</li>
-</ul>
-<p>The library supports both pre-MARI and post-MARI timing configurations via <code translate="no" v-pre>MARIMode.PRE_MARI</code> and <code translate="no" v-pre>MARIMode.POST_MARI</code>. Pre-MARI price limits are -10,000 to +10,000 EUR/MWh; post-MARI will be -15,000 to +15,000 EUR/MWh.</p>
+<h2 id="timing-utilities">Timing utilities</h2>
+<p>Gate closure calculations with full DST handling:</p>
+<div id="timing-utilities-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam.timing import gate_closure, MARIMode, current_mtu, mtu_range
+from datetime import datetime, timezone
+
+mtu_start = datetime(2026, 3, 21, 10, 0, tzinfo=timezone.utc)
+
+gc = gate_closure(mtu_start, mari_mode=MARIMode.PRE_MARI)
+print(f&quot;BSP GCT (BEGCT): {gc.bsp_gct}&quot;)     # 09:15:00 UTC (QH-45)
+print(f&quot;TSO GCT:         {gc.tso_gct}&quot;)      # 09:45:00 UTC (QH-15)
+print(f&quot;Activation at:   {gc.activation}&quot;)   # 09:52:30 UTC (QH-7.5)
+print(f&quot;Gate open now?   {gc.is_gate_open()}&quot;)
+
+# 96 MTUs in a normal day, 92 on the spring DST transition
+mtus = mtu_range(&quot;2026-03-21T00:00Z&quot;, &quot;2026-03-22T00:00Z&quot;)
+print(f&quot;MTUs: {len(mtus)}&quot;)</code></pre>
+</doc-codeblock></div>
 <hr>
-<h2 id="tso-specific-notes">TSO-specific notes</h2>
+<h2 id="pandas-integration">Pandas integration</h2>
+<p><span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-warning-text bg-badge-warning border border-badge-warning-border h-6 px-2 text-xs rounded-md">
+    <span>Coming Soon</span>
+</span></p>
+<p>A <code translate="no" v-pre>pandas</code> extra is planned that will allow building bid portfolios directly from a DataFrame. The intended API:</p>
+<div id="pandas-integration-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-mfrr-nordic-eam[pandas]</code></pre>
+</doc-codeblock></div>
+<div id="pandas-integration-code-2" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">import pandas as pd
+from nexa_mfrr_eam.pandas import bids_from_dataframe  # not yet available
+from nexa_mfrr_eam import BidDocument, TSO, BiddingZone, MarketProductType
+
+df = pd.DataFrame({
+    &quot;mtu_start&quot;: pd.to_datetime([&quot;2026-03-21T10:00Z&quot;, &quot;2026-03-21T10:15Z&quot;, &quot;2026-03-21T10:30Z&quot;]),
+    &quot;direction&quot;: [&quot;up&quot;, &quot;up&quot;, &quot;up&quot;],
+    &quot;volume_mw&quot;: [50, 45, 55],
+    &quot;price_eur&quot;: [72.30, 74.10, 69.50],
+    &quot;min_volume&quot;: [10, 10, 10],
+    &quot;resource&quot;:   [&quot;NOKG90901&quot;] * 3,
+})
+
+bids = bids_from_dataframe(
+    df,
+    bidding_zone=BiddingZone.NO2,
+    resource_coding_scheme=&quot;NNO&quot;,
+    product_type=MarketProductType.SCHEDULED_AND_DIRECT,
+    technical_link=True,
+)</code></pre>
+</doc-codeblock></div>
+<hr>
+<h2 id="tso-support">TSO support</h2>
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
 <tr>
 <th>TSO</th>
 <th>Country</th>
-<th>Heartbeat</th>
-<th>Min bid</th>
-<th>Notes</th>
+<th>Min volume</th>
+<th style="text-align: center;">Exclusive groups</th>
+<th style="text-align: center;">Multipart</th>
+<th style="text-align: center;">Technical linking</th>
+<th style="text-align: center;">Conditional linking</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Statnett</td>
 <td>NO</td>
-<td>Yes (T-12, T-7.5, T-3)</td>
 <td>10 MW</td>
-<td>Period shift, faster activation, mFRR-D support</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr>
+<td>Svenska kraftnät</td>
+<td>SE</td>
+<td>1 MW</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Energinet</td>
 <td>DK</td>
-<td>No</td>
 <td>1 MW</td>
-<td><code translate="no" v-pre>mktPSRType.psrType</code> mandatory; no direct activation until MARI</td>
-</tr>
-<tr>
-<td>Svenska kraftnat</td>
-<td>SE</td>
-<td>Yes (every 5 min)</td>
-<td>1 MW</td>
-<td>6-minute cut-off; silent drop of late documents</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Fingrid</td>
 <td>FI</td>
-<td>No</td>
 <td>1 MW</td>
-<td>Max 2,000 bids per message; inclusive bids supported</td>
+<td style="text-align: center;">Planned</td>
+<td style="text-align: center;">Planned</td>
+<td style="text-align: center;">Planned</td>
+<td style="text-align: center;">Planned</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Bidding zones: NO1-NO5, SE1-SE4, DK1-DK2, FI.</p>
+<hr>
+<h2 id="what-it-does-not-do-yet">What it does not do (yet)</h2>
+<p>The library serialises bids to CIM XML and validates them. It does not manage the transport layer. You are responsible for:</p>
+<ul>
+<li>ECP/EDX endpoint deployment and connectivity</li>
+<li>Parsing TSO acknowledgement responses (planned)</li>
+<li>Parsing activation and availability documents (planned)</li>
+<li>Heartbeat responder (planned)</li>
+</ul>
+<hr>
+<h2 id="api-reference">API reference</h2>
+<p><strong>Core builders</strong></p>
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Bid</code></td>
+<td>Simple bid builder (fluent API)</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ExclusiveGroup</code></td>
+<td>Exclusive group builder</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>MultipartGroup</code></td>
+<td>Multipart bid builder</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>InclusiveGroup</code></td>
+<td>Inclusive group builder</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TechnicalLink</code></td>
+<td>Cross-MTU technical linking builder</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>BidDocument</code></td>
+<td>Document builder</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>BuiltBidDocument</code></td>
+<td>Built document with <code translate="no" v-pre>.validate()</code> and <code translate="no" v-pre>.to_xml()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Key enums</strong></p>
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>Enum</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Direction</code></td>
+<td><code translate="no" v-pre>UP</code>, <code translate="no" v-pre>DOWN</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>MarketProductType</code></td>
+<td><code translate="no" v-pre>SCHEDULED_ONLY</code>, <code translate="no" v-pre>SCHEDULED_AND_DIRECT</code>, <code translate="no" v-pre>PERIOD_SHIFT_ONLY</code>, ...</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>BiddingZone</code></td>
+<td><code translate="no" v-pre>NO1</code>-<code translate="no" v-pre>NO5</code>, <code translate="no" v-pre>SE1</code>-<code translate="no" v-pre>SE4</code>, <code translate="no" v-pre>DK1</code>-<code translate="no" v-pre>DK2</code>, <code translate="no" v-pre>FI</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TSO</code></td>
+<td><code translate="no" v-pre>STATNETT</code>, <code translate="no" v-pre>FINGRID</code>, <code translate="no" v-pre>ENERGINET</code>, <code translate="no" v-pre>SVENSKA_KRAFTNAT</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>MARIMode</code></td>
+<td><code translate="no" v-pre>PRE_MARI</code>, <code translate="no" v-pre>POST_MARI</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ConditionalStatus</code></td>
+<td><code translate="no" v-pre>NOT_AVAILABLE_IF_ACTIVATED</code>, <code translate="no" v-pre>AVAILABLE_IF_ACTIVATED</code>, <code translate="no" v-pre>AVAILABLE_IF_NOT_ACTIVATED</code></td>
 </tr>
 </tbody>
 </table>
@@ -468,10 +531,10 @@ bid_qh_0 = (
                     </div>
             
                     <div class="w-1/2">
-                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../libraries/nexa-connect/">
+                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../premium/">
                             <span>
                                 <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
-                                <span class="block mt-1">nexa-​connect</span>
+                                <span class="block mt-1">Premium</span>
                             </span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                         </a>

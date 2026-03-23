@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827580333683">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827581360344">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.3.0.827580333683" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.3.0.827581360344" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827580333683" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827581360344" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,13 +170,13 @@
                 <!-- Page content  -->
 <h1 id="nexa-bidkit">nexa-bidkit</h1>
 <div id="retype-page-description" class="description-display text-description font-description leading-description mb-description-margin-bottom mt-description-margin-top tracking-description text-transform-description">Day-ahead and intraday auction bid generation for European power markets.</div>
-<p>Day-ahead and intraday auction bid generation library for European power markets. EUPHEMIA-compatible bid types with DataFrame-first curve construction and Nord Pool serialisation.</p>
+<p>Day-ahead and intraday auction bid generation for European power markets. Type-safe EUPHEMIA bid construction with Nord Pool serialisation.</p>
 <p><span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-info-text bg-badge-info border border-badge-info-border h-6 px-2 text-xs rounded-md">
     <span>Python 3.11+</span>
-</span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-success-text bg-badge-success border border-badge-success-border h-6 px-2 text-xs rounded-md">
-    <span>v1.0.0</span>
 </span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-light-text bg-badge-light border border-badge-light-border h-6 px-2 text-xs rounded-md">
     <span>MIT License</span>
+</span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-success-text bg-badge-success border border-badge-success-border h-6 px-2 text-xs rounded-md">
+    <span>v1.0.0</span>
 </span></p>
 <div id="nexa-bidkit-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
 <pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-bidkit</code></pre>
@@ -184,49 +184,38 @@
 <p><a href="https://github.com/phasenexa/nexa-bidkit">GitHub</a> | <a href="https://pypi.org/project/nexa-bidkit/">PyPI</a></p>
 <hr>
 <h2 id="why-this-exists">Why this exists</h2>
-<p>Building bids for European power auctions is complex. The EUPHEMIA algorithm supports block bids, linked orders, exclusive groups, and merit-order curves, each with specific constraints that vary by exchange. Getting the domain model wrong means rejected bids or, worse, unintended market exposure.</p>
+<p>Building bids for European power auctions is complex. The EUPHEMIA algorithm supports block bids, linked orders, exclusive groups, and merit order curves, each with specific constraints that vary by exchange. Getting the domain model wrong means rejected bids or, worse, unintended market exposure.</p>
 <p>nexa-bidkit provides:</p>
 <ul>
-<li><strong>Type-safe bid construction</strong> — Pydantic v2 models with strict validation</li>
-<li><strong>DataFrame-first API</strong> — build price-quantity curves from pandas DataFrames</li>
-<li><strong>EUPHEMIA bid types</strong> — block bids, linked orders, exclusive groups, merit-order curves</li>
-<li><strong>Comprehensive validation</strong> — EUPHEMIA compliance checks, data quality rules, temporal constraints</li>
-<li><strong>Nord Pool serialisation</strong> — convert your order book directly to Nord Pool Auction API payloads</li>
-<li><strong>15-minute MTU support</strong> — handles both hourly and quarter-hourly market time units</li>
-<li><strong>No floats for money</strong> — all prices and volumes use <code translate="no" v-pre>Decimal</code></li>
+<li><strong>Type-safe bid construction</strong> with Pydantic v2 models and strict validation</li>
+<li><strong>DataFrame-first curve building</strong> from pandas DataFrames</li>
+<li><strong>Exchange serialisation</strong> for the Nord Pool Auction API (curve orders, block orders, linked orders)</li>
+<li><strong>Pre-submission validation</strong> with EUPHEMIA compliance, data quality, and temporal constraint checks</li>
+<li><strong>15-minute MTU support</strong> natively across all bid types</li>
 </ul>
 <hr>
 <h2 id="quick-start">Quick start</h2>
-<h3 id="build-a-price-quantity-curve-from-a-dataframe">Build a price-quantity curve from a DataFrame</h3>
-<div id="build-a-price-quantity-curve-from-a-dataframe-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<h3 id="build-a-supply-curve-from-a-dataframe">Build a supply curve from a DataFrame</h3>
+<div id="build-a-supply-curve-from-a-dataframe-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
 <pre translate="no" class="language-python"><code v-pre class="language-python">import pandas as pd
 from decimal import Decimal
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from nexa_bidkit import (
-    CurveType,
-    MTUDuration,
-    MTUInterval,
-    from_dataframe,
-)
+from nexa_bidkit import CurveType, MTUDuration, MTUInterval, from_dataframe
 
-# Your bid data as a DataFrame
 df = pd.DataFrame({
     &quot;price&quot;: [10.5, 25.0, 45.0, 80.0],
     &quot;volume&quot;: [50, 100, 75, 25],
 })
 
-# Define the MTU (quarter-hourly from 13:00 Oslo time)
 mtu = MTUInterval.from_start(
     datetime(2026, 4, 1, 13, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;)),
-    MTUDuration.QUARTER_HOURLY
+    MTUDuration.QUARTER_HOURLY,
 )
 
-# Convert to a validated supply curve
 curve = from_dataframe(df, curve_type=CurveType.SUPPLY, mtu=mtu)
-
 print(f&quot;Total volume: {curve.total_volume} MW&quot;)
-print(f&quot;Price range:  {curve.min_price} - {curve.max_price} EUR/MWh&quot;)</code></pre>
+print(f&quot;Price range: {curve.min_price} - {curve.max_price} EUR/MWh&quot;)</code></pre>
 </doc-codeblock></div>
 <h3 id="create-block-bids">Create block bids</h3>
 <div id="create-block-bids-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
@@ -244,16 +233,14 @@ from nexa_bidkit import (
     exclusive_group,
 )
 
-tz = ZoneInfo(&quot;Europe/Oslo&quot;)
-
 delivery = DeliveryPeriod(
-    start=datetime(2026, 4, 1, 10, 0, tzinfo=tz),
-    end=datetime(2026, 4, 1, 14, 0, tzinfo=tz),
+    start=datetime(2026, 4, 1, 10, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;)),
+    end=datetime(2026, 4, 1, 14, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;)),
     duration=MTUDuration.QUARTER_HOURLY,
 )
 
-# Block bid — partially fillable (50%+)
-peak_bid = block_bid(
+# Partially fillable block bid (accept 50%+ fill)
+peak = block_bid(
     bidding_zone=BiddingZone.NO1,
     direction=Direction.SELL,
     delivery_period=delivery,
@@ -262,7 +249,7 @@ peak_bid = block_bid(
     min_acceptance_ratio=Decimal(&quot;0.5&quot;),
 )
 
-# Indivisible block bid — all-or-nothing
+# All-or-nothing block bid
 must_run = indivisible_block_bid(
     bidding_zone=BiddingZone.NO1,
     direction=Direction.SELL,
@@ -271,7 +258,7 @@ must_run = indivisible_block_bid(
     volume=Decimal(&quot;50&quot;),
 )
 
-# Linked block bid — only accepted if parent is accepted
+# Linked bid: only accepted if must_run is accepted
 ramp_up = linked_block_bid(
     parent_bid_id=must_run.bid_id,
     bidding_zone=BiddingZone.NO1,
@@ -279,80 +266,32 @@ ramp_up = linked_block_bid(
     delivery_period=delivery,
     price=Decimal(&quot;35.0&quot;),
     volume=Decimal(&quot;25&quot;),
-)
-
-# Exclusive group — at most one accepted
-option_a = block_bid(
-    bidding_zone=BiddingZone.NO1,
-    direction=Direction.SELL,
-    delivery_period=delivery,
-    price=Decimal(&quot;40.0&quot;),
-    volume=Decimal(&quot;150&quot;),
-)
-option_b = block_bid(
-    bidding_zone=BiddingZone.NO1,
-    direction=Direction.SELL,
-    delivery_period=delivery,
-    price=Decimal(&quot;45.0&quot;),
-    volume=Decimal(&quot;120&quot;),
-)
-options = exclusive_group([option_a, option_b])</code></pre>
+)</code></pre>
 </doc-codeblock></div>
-<h3 id="manage-an-order-book">Manage an order book</h3>
-<div id="manage-an-order-book-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_bidkit import (
+<h3 id="validate-and-submit-to-nord-pool">Validate and submit to Nord Pool</h3>
+<div id="validate-and-submit-to-nord-pool-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from datetime import datetime
+from zoneinfo import ZoneInfo
+from nexa_bidkit import (
     create_order_book,
     add_bid,
-    add_bids,
-    get_bids_by_zone,
-    count_bids,
-    total_volume_by_zone,
-    orders_to_dataframe,
-    BidStatus,
-    update_all_statuses,
+    validate_order_book_for_submission,
+    EuphemiaValidationError,
 )
+from nexa_bidkit.nordpool import order_book_to_nord_pool
 
 book = create_order_book()
 book = add_bid(book, must_run)
-book = add_bids(book, [peak_bid, ramp_up, options])
+book = add_bid(book, ramp_up)
 
-volumes = total_volume_by_zone(book)
-print(f&quot;NO1 total volume: {volumes[BiddingZone.NO1]} MW&quot;)
+gate_closure = datetime(2026, 4, 1, 12, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;))
 
-# Export to pandas for analysis or audit
-df = orders_to_dataframe(book)</code></pre>
-</doc-codeblock></div>
-<h3 id="validate-before-submission">Validate before submission</h3>
-<div id="validate-before-submission-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_bidkit import (
-    validate_bid,
-    validate_bids,
-    validate_order_book_for_submission,
-    get_validation_summary,
-    EuphemiaValidationError,
-)
-
-# Validate a single bid
 try:
-    validate_bid(peak_bid)
+    validate_order_book_for_submission(book, gate_closure_time=gate_closure)
 except EuphemiaValidationError as e:
-    print(f&quot;EUPHEMIA compliance error: {e}&quot;)
+    print(f&quot;Validation failed: {e}&quot;)
 
-# Batch validation — collects all errors
-results = validate_bids([must_run, peak_bid, ramp_up])
-summary = get_validation_summary(results)
-print(f&quot;Pass rate: {summary['pass_rate']:.1f}%&quot;)
-
-# Full submission check including gate closure
-gate_closure = datetime(2026, 3, 31, 12, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;))
-validate_order_book_for_submission(book, gate_closure_time=gate_closure)</code></pre>
-</doc-codeblock></div>
-<h3 id="submit-to-nord-pool">Submit to Nord Pool</h3>
-<div id="submit-to-nord-pool-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_bidkit.nordpool import order_book_to_nord_pool
-
-# Supply a resolver that maps (MTUInterval, BiddingZone) → Nord Pool contract ID.
-# Populate this from Nord Pool's products API at runtime.
+# Map (MTUInterval, BiddingZone) → Nord Pool contract ID
 def resolve_contract(mtu, zone):
     return f&quot;{zone.value}-{mtu.start.hour}&quot;
 
@@ -362,14 +301,8 @@ submission = order_book_to_nord_pool(
     portfolio=&quot;my-portfolio&quot;,
     contract_id_resolver=resolve_contract,
 )
-
-print(f&quot;Curve orders:        {len(submission.curve_orders)}&quot;)
-print(f&quot;Block orders:        {len(submission.block_orders)}&quot;)
-print(f&quot;Linked block orders: {len(submission.linked_block_orders)}&quot;)
-print(f&quot;Exclusive groups:    {len(submission.exclusive_group_orders)}&quot;)
-
-# Serialise to JSON for the Nord Pool API (uses camelCase aliases)
-payload = submission.curve_orders[0].model_dump(by_alias=True)</code></pre>
+print(f&quot;Block orders: {len(submission.block_orders)}&quot;)
+print(f&quot;Linked block orders: {len(submission.linked_block_orders)}&quot;)</code></pre>
 </doc-codeblock></div>
 <hr>
 <h2 id="supported-bid-types">Supported bid types</h2>
@@ -384,89 +317,55 @@ payload = submission.curve_orders[0].model_dump(by_alias=True)</code></pre>
 </thead>
 <tbody>
 <tr>
-<td>Simple hourly/MTU orders</td>
-<td>Price-quantity pairs per interval</td>
+<td>Simple bids (curve orders)</td>
+<td>Price-quantity steps per MTU</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Block bids</td>
-<td>Fixed price/volume across consecutive MTUs, partially fillable</td>
+<td>Fixed price and volume across consecutive MTUs, partially fillable</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Indivisible block bids</td>
-<td>All-or-nothing across multiple intervals</td>
+<td>All-or-nothing block bids</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Linked block bids</td>
-<td>Parent-child dependencies</td>
+<td>Accepted only if the parent bid is accepted</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td>Exclusive groups</td>
-<td>Mutually exclusive bid sets</td>
+<td>At most one bid in the group is accepted</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr>
-<h2 id="core-concepts">Core concepts</h2>
-<h3 id="market-time-units-mtu">Market Time Units (MTU)</h3>
-<p>EU power markets transitioned to 15-minute MTUs on 30 September 2025. The library handles both:</p>
-<ul>
-<li><code translate="no" v-pre>MTUDuration.QUARTER_HOURLY</code> — 15-minute intervals (96 per day)</li>
-<li><code translate="no" v-pre>MTUDuration.HOURLY</code> — hourly intervals (24 per day)</li>
-</ul>
-<h3 id="price-quantity-curves">Price-quantity curves</h3>
-<p>Merit-order curves represent supply or demand:</p>
-<ul>
-<li><strong>Supply curves</strong> — steps sorted ascending by price (cheapest generation first)</li>
-<li><strong>Demand curves</strong> — steps sorted descending by price (highest-value consumption first)</li>
-</ul>
-<p>Apply curve transforms with <code translate="no" v-pre>merge_curves</code>, <code translate="no" v-pre>clip_curve</code>, <code translate="no" v-pre>filter_zero_volume</code>, and <code translate="no" v-pre>aggregate_by_price</code>.</p>
-<h3 id="euphemia-is-a-clearing-algorithm-not-a-wire-protocol">EUPHEMIA is a clearing algorithm, not a wire protocol</h3>
-<p>No exchange accepts EUPHEMIA as a submission format. Each exchange has its own API and payload structure. nexa-bidkit models the EUPHEMIA bid types correctly at the domain level, then handles the exchange-specific translation.</p>
+<h2 id="key-concepts">Key concepts</h2>
+<h3 id="euphemia-bid-types">EUPHEMIA bid types</h3>
+<p>The library models EUPHEMIA bid types at the domain level, then handles exchange-specific serialisation for Nord Pool. Each bid type maps directly to a corresponding Nord Pool Auction API payload.</p>
 <h3 id="validation-catches-mistakes-early">Validation catches mistakes early</h3>
-<p>The validator enforces:</p>
+<p>The validation module enforces constraints before you attempt submission:</p>
 <ul>
-<li><strong>EUPHEMIA rules</strong> — maximum 200 curve steps, block duration limits (1--24 hours)</li>
+<li><strong>EUPHEMIA rules</strong> — maximum curve steps (200), block duration limits (1-24 hours)</li>
 <li><strong>Data quality</strong> — minimum volumes (0.1 MW), reasonable price increments</li>
-<li><strong>Temporal constraints</strong> — gate closure deadlines, delivery periods within the auction day</li>
+<li><strong>Temporal constraints</strong> — gate closure deadlines, delivery periods within auction day</li>
 <li><strong>Portfolio limits</strong> — total volume sanity checks across bidding zones</li>
 </ul>
-<hr>
-<h2 id="examples">Examples</h2>
-<p>The <code translate="no" v-pre>examples/</code> directory contains Jupyter notebooks covering real-world European power market scenarios.</p>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Notebook</th>
-<th>Scenario</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code translate="no" v-pre>01_simple_hourly_bids.ipynb</code></td>
-<td>Hallingdal Wind Farm (NO2) — 24h supply bids with 15-min MTUs</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>02_block_bids.ipynb</code></td>
-<td>Borgholt CCGT (DE-LU) — startup cost recovery, exclusive operating modes</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>03_merit_order_curves.ipynb</code></td>
-<td>Fjord Energy aggregator — multi-asset portfolio merit order</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>04_order_book_and_validation.ipynb</code></td>
-<td>Solberg trading desk — end-to-end: order book, validation, Nord Pool export</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div id="validation-catches-mistakes-early-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_bidkit import validate_bids, get_validation_summary
+
+results = validate_bids([must_run, peak, ramp_up])
+summary = get_validation_summary(results)
+print(f&quot;Validated {summary['total_bids']} bids&quot;)
+print(f&quot;Pass rate: {summary['pass_rate']:.1f}%&quot;)</code></pre>
+</doc-codeblock></div>
+<h3 id="no-floats-for-prices-or-volumes">No floats for prices or volumes</h3>
+<p>All prices and volumes use <code translate="no" v-pre>Decimal</code>, not <code translate="no" v-pre>float</code>. This prevents floating-point rounding errors from producing subtly wrong bid values.</p>
 <hr>
 <h2 id="premium-hosted-bid-optimisation">Premium: Hosted Bid Optimisation</h2>
 <p><span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-warning-text bg-badge-warning border border-badge-warning-border h-6 px-2 text-xs rounded-md">

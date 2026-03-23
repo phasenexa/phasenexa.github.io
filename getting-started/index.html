@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827580333683">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827581360344">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.3.0.827580333683" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.3.0.827581360344" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827580333683" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.3.0.827580333683" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.3.0.827581360344" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,18 +181,19 @@
 <pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-marketdata</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_marketdata import NordPool
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_marketdata import NexaClient
+from nexa_marketdata.types import BiddingZone
+import datetime
 
-client = NordPool()
+client = NexaClient()
 
-# Fetch day-ahead prices for NO1 (South Norway)
+# Day-ahead prices for NO2 (Southern Norway)
 prices = client.day_ahead_prices(
-    bidding_zone=&quot;NO1&quot;,
-    date=&quot;2025-10-01&quot;
+    zone=BiddingZone.NO2,
+    start=datetime.date(2025, 10, 1),
+    end=datetime.date(2025, 10, 7),
 )
-
-for interval in prices:
-    print(f&quot;{interval.start} -&gt; {interval.price} EUR/MWh&quot;)</code></pre>
+print(prices.head())</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="bid-generation">
@@ -202,58 +203,39 @@ for interval in prices:
 <pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-bidkit</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_bidkit import Portfolio, BlockBid
-from nexa_bidkit.nordpool import NordPoolSerializer
-
-# Build a simple block bid
-bid = BlockBid(
-    name=&quot;Wind_Block_01&quot;,
-    periods=range(8, 20),  # Hours 08:00-20:00
-    price=45.50,           # EUR/MWh
-    volume=25.0,           # MW
-    min_acceptance_ratio=1.0
+<pre translate="no" class="language-python"><code v-pre class="language-python">from decimal import Decimal
+from datetime import datetime
+from zoneinfo import ZoneInfo
+from nexa_bidkit import (
+    BiddingZone,
+    Direction,
+    DeliveryPeriod,
+    MTUDuration,
+    block_bid,
+    create_order_book,
+    add_bid,
+    validate_order_book_for_submission,
 )
 
-# Serialise for Nord Pool submission
-serializer = NordPoolSerializer()
-payload = serializer.serialize(Portfolio(bids=[bid]))</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab v-cloak id="exchange-connectivity">
-<template #title>Exchange Connectivity</template>
-<p><strong>nexa-connect</strong> is for teams building or maintaining direct exchange connections.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-bash"><code v-pre class="language-bash">go get github.com/phasenexa/nexa-connect</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-go"><code v-pre class="language-go">package main
-
-import (
-    &quot;context&quot;
-    &quot;log&quot;
-
-    &quot;github.com/phasenexa/nexa-connect/nordpool&quot;
+delivery = DeliveryPeriod(
+    start=datetime(2026, 4, 1, 8, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;)),
+    end=datetime(2026, 4, 1, 20, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;)),
+    duration=MTUDuration.QUARTER_HOURLY,
 )
 
-func main() {
-    client, err := nordpool.NewClient(nordpool.Config{
-        APIKey:  &quot;your-api-key&quot;,
-        BaseURL: &quot;https://api.nordpoolgroup.com/v2&quot;,
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
+bid = block_bid(
+    bidding_zone=BiddingZone.NO1,
+    direction=Direction.SELL,
+    delivery_period=delivery,
+    price=Decimal(&quot;45.50&quot;),
+    volume=Decimal(&quot;25&quot;),
+)
 
-    ctx := context.Background()
-    markets, err := client.ListMarkets(ctx)
-    if err != nil {
-        log.Fatal(err)
-    }
+book = create_order_book()
+book = add_bid(book, bid)
 
-    for _, m := range markets {
-        log.Printf(&quot;Market: %s (%s)&quot;, m.Name, m.ID)
-    }
-}</code></pre>
+gate_closure = datetime(2026, 4, 1, 12, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;))
+validate_order_book_for_submission(book, gate_closure_time=gate_closure)</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 </doc-tabs>
@@ -272,22 +254,17 @@ func main() {
 <tr>
 <td>nexa-marketdata</td>
 <td>Python</td>
-<td>3.10+</td>
+<td>3.11+</td>
 </tr>
 <tr>
 <td>nexa-bidkit</td>
 <td>Python</td>
-<td>3.10+</td>
+<td>3.11+</td>
 </tr>
 <tr>
-<td>nexa-connect</td>
-<td>Go</td>
-<td>1.21+</td>
-</tr>
-<tr>
-<td>nexa-mcp</td>
+<td>nexa-mfrr-nordic-eam</td>
 <td>Python</td>
-<td>3.10+</td>
+<td>3.11+</td>
 </tr>
 </tbody>
 </table>
@@ -298,7 +275,7 @@ func main() {
 <ul>
 <li><strong>API credentials</strong> from your exchange (Nord Pool, EPEX SPOT, etc.)</li>
 <li><strong>ENTSO-E API key</strong> from the <a href="https://transparency.entsoe.eu/">ENTSO-E Transparency Platform</a> (free registration)</li>
-<li>A working <strong>Python 3.10+</strong> or <strong>Go 1.21+</strong> environment</li>
+<li>A working <strong>Python 3.11+</strong> environment</li>
 </ul>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
