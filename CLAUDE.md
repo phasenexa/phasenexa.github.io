@@ -35,8 +35,7 @@ phasenexa.github.io/
 │   ├── index.md               # Library overview
 │   ├── nexa-marketdata.md
 │   ├── nexa-bidkit.md
-│   ├── nexa-connect.md
-│   └── nexa-mcp.md
+│   └── nexa-mfrr-nordic-eam.md
 ├── index.md                   # Landing page (hero, CTA)
 ├── getting-started.md         # Quick start guide
 ├── premium.md                 # Premium tiers (coming soon)
@@ -49,7 +48,7 @@ phasenexa.github.io/
 
 When the `build.yml` workflow runs with `update_content: true`, Claude Code is invoked to:
 
-1. Read each sibling repo cloned into `.repos/` (nexa-marketdata, nexa-bidkit, nexa-connect, nexa-mcp, etc.)
+1. Read each sibling repo cloned into `.repos/` (nexa-marketdata, nexa-bidkit, nexa-mfrr-nordic-eam, etc.)
 2. Analyse their README.md, CHANGELOG.md, pyproject.toml/go.mod, source code, and tests
 3. Update the corresponding `libraries/*.md` pages with current information
 4. Update the landing page stats or messaging if anything material has changed
@@ -125,12 +124,11 @@ Use Retype's built-in components where appropriate:
 
 These are the repos Claude should analyse when updating content:
 
-| Repository        | Language | Description                                      |
-|-------------------|----------|--------------------------------------------------|
-| nexa-marketdata   | Python   | Unified API client for European power market data |
-| nexa-bidkit       | Python   | Day-ahead and intraday auction bid generation     |
-| nexa-connect      | Go       | Exchange connectivity SDK                         |
-| nexa-mcp          | Python   | MCP server for LLM clients                       |
+| Repository           | Language | Description                                                  |
+|----------------------|----------|--------------------------------------------------------------|
+| nexa-marketdata      | Python   | Unified API client for European power market data            |
+| nexa-bidkit          | Python   | Day-ahead and intraday auction bid generation                |
+| nexa-mfrr-nordic-eam | Python   | mFRR energy activation market bids for Nordic TSOs           |
 
 More repositories will be added over time. The workflow dynamically discovers repos in the `phasenexa` GitHub organisation.
 

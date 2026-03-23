@@ -52,27 +52,26 @@ pip install nexa-bidkit
 :::
 
 :::content
-[!badge variant="success" text="Go"]
+[!badge variant="info" text="Python"]
 
-### nexa-connect
+### nexa-mfrr-nordic-eam
 
-Exchange connectivity SDK. FIX protocol, REST/WebSocket connections to Nord Pool, EPEX SPOT, EEX. Session management, heartbeat, reconnection, order lifecycle.
+mFRR energy activation market bids for Nordic TSOs. Correct domain modelling of ENTSO-E mFRR bid types (simple, linked, exclusive groups, multipart, inclusive groups) with TSO-specific validation and CIM XML serialisation for Statnett, Svenska kraftnät, Energinet, and Fingrid.
 
-```bash
-go get github.com/phasenexa/nexa-connect
+```python
+pip install nexa-mfrr-nordic-eam
 ```
 
-[Learn more](/libraries/nexa-connect/) | [GitHub](https://github.com/phasenexa/nexa-connect)
+[Learn more](/libraries/nexa-mfrr-nordic-eam/) | [GitHub](https://github.com/phasenexa/nexa-mfrr-nordic-eam)
 :::
 
 :::content
-[!badge variant="info" text="Python"]
 
-### nexa-mcp
+### Coming soon: nexa-connect and nexa-mcp
 
-MCP server exposing Phase Nexa data and tools to LLM clients. Query market data, generate bids, and monitor positions from Claude, ChatGPT, or any MCP-compatible client.
+**nexa-connect** (Go) -- exchange connectivity SDK with FIX protocol, REST/WebSocket connections to Nord Pool, EPEX SPOT, and EEX.
 
-[Learn more](/libraries/nexa-mcp/) | [GitHub](https://github.com/phasenexa/nexa-mcp)
+**nexa-mcp** (Python) -- MCP server exposing Phase Nexa data and tools to LLM clients.
 :::
 
 ---

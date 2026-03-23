@@ -18,8 +18,7 @@ All libraries are MIT-licensed.
 |---------|----------|--------------|---------|
 | [nexa-marketdata](/libraries/nexa-marketdata/) | Python | Unified market data client for Nord Pool, EPEX SPOT, ENTSO-E, EEX | `pip install nexa-marketdata` |
 | [nexa-bidkit](/libraries/nexa-bidkit/) | Python | Day-ahead and intraday auction bid generation | `pip install nexa-bidkit` |
-| [nexa-connect](/libraries/nexa-connect/) | Go | Exchange connectivity SDK (FIX, REST, WebSocket) | `go get github.com/phasenexa/nexa-connect` |
-| [nexa-mcp](/libraries/nexa-mcp/) | Python | MCP server for LLM-powered trading workflows | `pip install nexa-mcp` |
+| [nexa-mfrr-nordic-eam](/libraries/nexa-mfrr-nordic-eam/) | Python | mFRR energy activation market bids for Nordic TSOs | `pip install nexa-mfrr-nordic-eam` |
 
 ---
 
@@ -28,18 +27,18 @@ All libraries are MIT-licensed.
 ```
                      Your Trading System
                             |
-              +-------------+-------------+
-              |             |             |
-        nexa-marketdata  nexa-bidkit  nexa-connect
-              |             |             |
-              +------+------+      +------+
-                     |             |
-              Nord Pool / EPEX SPOT / EEX / ENTSO-E
+         +------------------+------------------+
+         |                  |                  |
+   nexa-marketdata     nexa-bidkit    nexa-mfrr-nordic-eam
+         |                  |                  |
+         +--------+---------+          +-------+
+                  |                    |
+         Nord Pool / EPEX SPOT / EEX   Nordic TSOs
+              / ENTSO-E                (Statnett, SVK,
+                                        Energinet, Fingrid)
 ```
 
-**nexa-marketdata** fetches the data. **nexa-bidkit** builds the bids. **nexa-connect** submits them. Each library works independently, but they are designed to compose naturally.
-
-**nexa-mcp** sits alongside all of them, exposing their capabilities to LLM clients for interactive querying and exploration.
+**nexa-marketdata** fetches the data. **nexa-bidkit** builds day-ahead and intraday bids. **nexa-mfrr-nordic-eam** constructs and serialises mFRR balancing bids for Nordic TSOs. Each library works independently, but they are designed to compose naturally.
 
 ---
 
@@ -49,6 +48,8 @@ These are on the roadmap. Development priority is driven by community demand.
 
 | Library | Language | What it will do | Status |
 |---------|----------|-----------------|--------|
+| nexa-connect | Go | Exchange connectivity SDK (FIX, REST, WebSocket) | Coming soon |
+| nexa-mcp | Python | MCP server for LLM-powered trading workflows | Coming soon |
 | nexa-forecast | Python | Short-term price and load forecasting | Planned |
 | nexa-position | Go | Real-time position management | Planned |
 | nexa-backtest | Python | Energy market backtesting framework | Planned |

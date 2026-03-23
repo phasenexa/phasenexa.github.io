@@ -47,7 +47,7 @@ jobs:
 
           if [ -z "$repos" ]; then
             echo "No repos found via API, falling back to known list"
-            repos="nexa-marketdata nexa-bidkit nexa-connect nexa-mcp"
+            repos="nexa-marketdata nexa-bidkit nexa-mfrr-nordic-eam"
           fi
 
           for repo in $repos; do
@@ -76,7 +76,7 @@ jobs:
 
             The sibling repositories have been cloned into .repos/ - analyse each one:
             1. Read their README.md, CHANGELOG.md, pyproject.toml or go.mod, and source code
-            2. Update the corresponding libraries/*.md page with current, accurate information
+            2. Update the corresponding libraries/*.md page with current, accurate information as well as getting-started.md and index.md if these are out-dated
             3. Keep the existing page structure and Retype frontmatter
             4. Update version numbers, feature lists, and code examples if they have changed
             5. Do NOT change index.md marketing copy, premium.md, or community.md unless instructed
@@ -91,6 +91,7 @@ jobs:
             - Use British English spelling
             - All code examples must be realistic and correct
             - Follow the Phase Nexa styling guidelines in CLAUDE.md
+            - Remove anything which doesn't exist
           claude_args: |
             --model ${{ inputs.model }}
             --max-turns 30
