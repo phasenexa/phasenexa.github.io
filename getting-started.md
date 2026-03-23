@@ -62,6 +62,45 @@ serializer = NordPoolSerializer()
 payload = serializer.serialize(Portfolio(bids=[bid]))
 ```
 
++++ mFRR Bids
+
+**nexa-mfrr-nordic-eam** is the starting point for BSPs building Nordic mFRR energy activation market bid workflows.
+
+```python
+pip install nexa-mfrr-nordic-eam
+```
+
+```python
+from nexa_mfrr_eam import (
+    Bid, BidDocument, Direction, MarketProductType,
+    BiddingZone, TSO, MARIMode,
+)
+
+# Create a simple divisible up-regulation bid
+bid = (
+    Bid.up(volume_mw=50, price_eur=85.50)
+    .divisible(min_volume_mw=10)
+    .for_mtu("2026-03-21T10:00Z")
+    .resource("NOKG90901", coding_scheme="NNO")
+    .product_type(MarketProductType.SCHEDULED_AND_DIRECT)
+    .build()
+)
+
+# Wrap in a document targeting Statnett
+doc = (
+    BidDocument(tso=TSO.STATNETT)
+    .sender(party_id="9999909919920", coding_scheme="A10")
+    .add_bid(bid)
+    .build()
+)
+
+# Validate, then serialise to CIM XML
+errors = doc.validate(mari_mode=MARIMode.PRE_MARI)
+if not errors:
+    xml_bytes = doc.to_xml()
+    # Send xml_bytes via your ECP/EDX endpoint
+```
+
 +++ Exchange Connectivity
 
 **nexa-connect** is for teams building or maintaining direct exchange connections.
@@ -112,6 +151,7 @@ func main() {
 | nexa-marketdata | Python     | 3.10+           |
 | nexa-bidkit     | Python     | 3.10+           |
 | nexa-connect    | Go         | 1.21+           |
+| nexa-mfrr-nordic-eam | Python | 3.11+           |
 | nexa-mcp        | Python     | 3.10+           |
 
 ---
