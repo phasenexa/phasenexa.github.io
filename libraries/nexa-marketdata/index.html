@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827579284362">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827579977646">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.3.0.827579284362" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.3.0.827579977646" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827579284362" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.3.0.827579977646" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827579284362" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827579284362" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.3.0.827579977646" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.3.0.827579977646" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -176,7 +176,7 @@
 </span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-light-text bg-badge-light border border-badge-light-border h-6 px-2 text-xs rounded-md">
     <span>MIT License</span>
 </span> <span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-warning-text bg-badge-warning border border-badge-warning-border h-6 px-2 text-xs rounded-md">
-    <span>Alpha — v0.1.0</span>
+    <span>v0.1.0 — Alpha</span>
 </span></p>
 <div id="nexa-marketdata-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-bash"><code v-pre class="language-bash">pip install nexa-marketdata</code></pre>
@@ -188,15 +188,40 @@
 <p>nexa-marketdata provides a single, well-tested client that handles:</p>
 <ul>
 <li><strong>Multiple exchanges</strong> through a consistent interface</li>
-<li><strong>15-minute MTU data</strong> natively (EU transition: 30 Sept 2025)</li>
-<li><strong>Rate limiting</strong> so you do not get blocked by exchange APIs</li>
+<li><strong>15-minute MTU data</strong> natively (not bolted on as an afterthought)</li>
+<li><strong>Rate limiting</strong> so you do not get throttled at 03:00</li>
 <li><strong>Timezone normalisation</strong> across bidding zones</li>
-<li><strong>Caching</strong> to avoid redundant API calls</li>
-<li><strong>Type-safe models</strong> with Pydantic v2 and strict mypy compliance</li>
-<li><strong>No floats for money</strong> — all prices and volumes use <code translate="no" v-pre>Decimal</code></li>
+<li><strong>Caching</strong> to avoid redundant API calls on repeated historical requests</li>
+<li><strong>Type-safe models</strong> with strict mypy compliance and Pydantic v2</li>
 </ul>
 <hr>
+<h2 id="quick-start">Quick start</h2>
+<div id="quick-start-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_marketdata import NexaClient
+from nexa_marketdata.types import BiddingZone
+import datetime
+
+client = NexaClient()
+
+# Day-ahead prices for NO2 (Southern Norway)
+prices = client.day_ahead_prices(
+    zone=BiddingZone.NO2,
+    start=datetime.date(2025, 1, 1),
+    end=datetime.date(2025, 1, 7),
+)
+print(prices.head())</code></pre>
+</doc-codeblock></div>
+<h2 id="configuration">Configuration</h2>
+<p>Set API credentials as environment variables:</p>
+<div id="configuration-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">export NORDPOOL_USERNAME=&quot;your-username&quot;
+export NORDPOOL_PASSWORD=&quot;your-password&quot;
+export ENTSOE_API_KEY=&quot;your-key-here&quot;</code></pre>
+</doc-codeblock></div>
+<p>Or use a <code translate="no" v-pre>.env</code> file. Credentials are never hardcoded and never committed.</p>
+<hr>
 <h2 id="implementation-status">Implementation status</h2>
+<p>The library is in active development. Nord Pool day-ahead prices are production-ready. The remaining sources and cross-cutting features are coming.</p>
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -246,39 +271,16 @@
 </table>
 </div>
 <hr>
-<h2 id="quick-start">Quick start</h2>
-<div id="quick-start-code-1" class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_marketdata import NexaClient
-from nexa_marketdata.types import BiddingZone
-import datetime
-
-client = NexaClient()
-
-# Day-ahead prices for NO2 (Southern Norway)
-prices = client.day_ahead_prices(
-    zone=BiddingZone.NO2,
-    start=datetime.date(2025, 1, 1),
-    end=datetime.date(2025, 1, 7),
-)
-
-print(prices.head())</code></pre>
-</doc-codeblock></div>
-<p>Set API credentials as environment variables before running:</p>
-<div id="quick-start-code-2" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-bash"><code v-pre class="language-bash">export NORDPOOL_USERNAME=&quot;your-username&quot;
-export NORDPOOL_PASSWORD=&quot;your-password&quot;
-export ENTSOE_API_KEY=&quot;your-key-here&quot;</code></pre>
-</doc-codeblock></div>
-<hr>
 <h2 id="key-features">Key features</h2>
-<h3 id="type-safe-data-models">Type-safe data models</h3>
-<p>All data is returned as Pydantic v2 models. No more parsing different JSON structures from different exchanges.</p>
-<h3 id="mtu-aware-resolution">MTU-aware resolution</h3>
-<p>The library handles both hourly and 15-minute Market Time Units. Request data that spans the September 2025 MTU transition and you get correctly aligned intervals.</p>
-<h3 id="decimal-arithmetic">Decimal arithmetic</h3>
-<p>All prices and volumes are <code translate="no" v-pre>Decimal</code>, never <code translate="no" v-pre>float</code>. Rounding errors in energy pricing are not acceptable.</p>
-<h3 id="vcr-based-testing">VCR-based testing</h3>
-<p>Tests use recorded HTTP fixtures — no live API calls required in CI. Your pipelines will not break when Nord Pool has an outage.</p>
+<h3 id="no-floats-for-money">No floats for money</h3>
+<p>All prices and volumes use <code translate="no" v-pre>decimal.Decimal</code>. Floating-point rounding errors are a common source of subtle bugs in trading systems. The library enforces <code translate="no" v-pre>Decimal</code> throughout.</p>
+<h3 id="mtu-aware-from-day-one">MTU-aware from day one</h3>
+<p>EU power markets transitioned to 15-minute Market Time Units on 30 September 2025. nexa-marketdata handles both hourly and quarter-hourly resolution, and is designed to handle spans that cross the transition date correctly.</p>
+<h3 id="vcr-based-tests">VCR-based tests</h3>
+<p>Tests use recorded HTTP fixtures rather than live API calls. CI never touches an exchange. You can run the full test suite offline.</p>
+<div id="vcr-based-tests-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">make test</code></pre>
+</doc-codeblock></div>
 <hr>
 <h2 id="premium-hosted-data-proxy">Premium: Hosted Data Proxy</h2>
 <p><span class="no-link inline-flex align-middle items-center justify-center font-medium leading-none whitespace-nowrap text-badge-warning-text bg-badge-warning border border-badge-warning-border h-6 px-2 text-xs rounded-md">

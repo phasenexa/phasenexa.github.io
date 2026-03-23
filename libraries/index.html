@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827579284362">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827579977646">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -33,11 +33,11 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.3.0.827579284362" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.3.0.827579977646" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827579284362" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827579977646" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827579284362" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827579977646" data-turbo-eval="false" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -198,7 +198,7 @@
 <tr>
 <td><a href="nexa-mfrr-nordic-eam/">nexa-mfrr-nordic-eam</a></td>
 <td>Python</td>
-<td>mFRR energy activation market bids for Nordic TSOs (Statnett, Energinet, SVK, Fingrid)</td>
+<td>mFRR energy activation market bid submission for Nordic TSOs</td>
 <td><code translate="no" v-pre>pip install nexa-mfrr-nordic-eam</code></td>
 </tr>
 <tr>
@@ -219,17 +219,18 @@
 <hr>
 <h2 id="how-they-fit-together">How they fit together</h2>
 <div id="how-they-fit-together-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">                     Your Trading System
-                            |
-              +-------------+-------------+
-              |             |             |
-        nexa-marketdata  nexa-bidkit  nexa-connect
-              |             |             |
-              +------+------+      +------+
-                     |             |
-              Nord Pool / EPEX SPOT / EEX / ENTSO-E</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">                        Your Trading System
+                                |
+          +-----------+---------+----------+-----------+
+          |           |                    |           |
+  nexa-marketdata  nexa-bidkit    nexa-mfrr-nordic-eam  nexa-connect
+          |           |                    |           |
+          +-----+-----+          Nordic TSOs    Exchange APIs
+                |               (Statnett, SVK,
+       Nord Pool / EPEX SPOT /   Energinet, Fingrid)
+       EEX / ENTSO-E</code></pre>
 </doc-codeblock></div>
-<p><strong>nexa-marketdata</strong> fetches the data. <strong>nexa-bidkit</strong> builds the bids. <strong>nexa-connect</strong> submits them. Each library works independently, but they are designed to compose naturally.</p>
+<p><strong>nexa-marketdata</strong> fetches the data. <strong>nexa-bidkit</strong> builds day-ahead and intraday auction bids. <strong>nexa-mfrr-nordic-eam</strong> builds mFRR balancing bids for Nordic TSOs. <strong>nexa-connect</strong> handles exchange connectivity.</p>
 <p><strong>nexa-mcp</strong> sits alongside all of them, exposing their capabilities to LLM clients for interactive querying and exploration.</p>
 <hr>
 <h2 id="planned-libraries">Planned libraries</h2>
