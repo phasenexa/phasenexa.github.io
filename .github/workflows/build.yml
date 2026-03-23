@@ -108,5 +108,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: retypeapp/action-github-pages@latest
         with:
-          branch-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           update-branch: true
