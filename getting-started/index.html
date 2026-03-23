@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827581360344">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.3.0.827590363215">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.3.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.3.0.827581360344" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.3.0.827590363215" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.3.0.827590363215" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827581360344" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.3.0.827581360344" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.3.0.827590363215" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.3.0.827590363215" defer></script>
 
     <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,12 +187,13 @@ import datetime
 
 client = NexaClient()
 
-# Day-ahead prices for NO2 (Southern Norway)
+# Fetch day-ahead prices for NO1 (South Norway)
 prices = client.day_ahead_prices(
-    zone=BiddingZone.NO2,
+    zone=BiddingZone.NO1,
     start=datetime.date(2025, 10, 1),
     end=datetime.date(2025, 10, 7),
 )
+
 print(prices.head())</code></pre>
 </doc-codeblock></div>
 </doc-tab>
@@ -207,14 +208,8 @@ print(prices.head())</code></pre>
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from nexa_bidkit import (
-    BiddingZone,
-    Direction,
-    DeliveryPeriod,
-    MTUDuration,
-    block_bid,
-    create_order_book,
-    add_bid,
-    validate_order_book_for_submission,
+    BiddingZone, Direction, DeliveryPeriod, MTUDuration,
+    block_bid, validate_bid,
 )
 
 delivery = DeliveryPeriod(
@@ -223,6 +218,7 @@ delivery = DeliveryPeriod(
     duration=MTUDuration.QUARTER_HOURLY,
 )
 
+# Build a block bid for a wind plant
 bid = block_bid(
     bidding_zone=BiddingZone.NO1,
     direction=Direction.SELL,
@@ -231,11 +227,82 @@ bid = block_bid(
     volume=Decimal(&quot;25&quot;),
 )
 
-book = create_order_book()
-book = add_bid(book, bid)
+validate_bid(bid)
+print(f&quot;Total volume: {bid.total_volume} MW&quot;)</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="mfrr-bids">
+<template #title>mFRR Bids</template>
+<p><strong>nexa-mfrr-nordic-eam</strong> is the starting point for BSPs building Nordic mFRR energy activation market bid workflows.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">pip install nexa-mfrr-nordic-eam</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from nexa_mfrr_eam import (
+    Bid, BidDocument, Direction, MarketProductType,
+    BiddingZone, TSO, MARIMode,
+)
 
-gate_closure = datetime(2026, 4, 1, 12, 0, tzinfo=ZoneInfo(&quot;Europe/Oslo&quot;))
-validate_order_book_for_submission(book, gate_closure_time=gate_closure)</code></pre>
+# Create a simple divisible up-regulation bid
+bid = (
+    Bid.up(volume_mw=50, price_eur=85.50)
+    .divisible(min_volume_mw=10)
+    .for_mtu(&quot;2026-03-21T10:00Z&quot;)
+    .resource(&quot;NOKG90901&quot;, coding_scheme=&quot;NNO&quot;)
+    .product_type(MarketProductType.SCHEDULED_AND_DIRECT)
+    .build()
+)
+
+# Wrap in a document targeting Statnett
+doc = (
+    BidDocument(tso=TSO.STATNETT)
+    .sender(party_id=&quot;9999909919920&quot;, coding_scheme=&quot;A10&quot;)
+    .add_bid(bid)
+    .build()
+)
+
+# Validate, then serialise to CIM XML
+errors = doc.validate(mari_mode=MARIMode.PRE_MARI)
+if not errors:
+    xml_bytes = doc.to_xml()
+    # Send xml_bytes via your ECP/EDX endpoint</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="exchange-connectivity">
+<template #title>Exchange Connectivity</template>
+<p><strong>nexa-connect</strong> is for teams building or maintaining direct exchange connections.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">go get github.com/phasenexa/nexa-connect</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre translate="no" class="language-go"><code v-pre class="language-go">package main
+
+import (
+    &quot;context&quot;
+    &quot;log&quot;
+
+    &quot;github.com/phasenexa/nexa-connect/nordpool&quot;
+)
+
+func main() {
+    client, err := nordpool.NewClient(nordpool.Config{
+        APIKey:  &quot;your-api-key&quot;,
+        BaseURL: &quot;https://api.nordpoolgroup.com/v2&quot;,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    ctx := context.Background()
+    markets, err := client.ListMarkets(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    for _, m := range markets {
+        log.Printf(&quot;Market: %s (%s)&quot;, m.Name, m.ID)
+    }
+}</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 </doc-tabs>
@@ -262,7 +329,17 @@ validate_order_book_for_submission(book, gate_closure_time=gate_closure)</code><
 <td>3.11+</td>
 </tr>
 <tr>
+<td>nexa-connect</td>
+<td>Go</td>
+<td>1.21+</td>
+</tr>
+<tr>
 <td>nexa-mfrr-nordic-eam</td>
+<td>Python</td>
+<td>3.11+</td>
+</tr>
+<tr>
+<td>nexa-mcp</td>
 <td>Python</td>
 <td>3.11+</td>
 </tr>
@@ -275,7 +352,7 @@ validate_order_book_for_submission(book, gate_closure_time=gate_closure)</code><
 <ul>
 <li><strong>API credentials</strong> from your exchange (Nord Pool, EPEX SPOT, etc.)</li>
 <li><strong>ENTSO-E API key</strong> from the <a href="https://transparency.entsoe.eu/">ENTSO-E Transparency Platform</a> (free registration)</li>
-<li>A working <strong>Python 3.11+</strong> environment</li>
+<li>A working <strong>Python 3.11+</strong> or <strong>Go 1.21+</strong> environment</li>
 </ul>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
