@@ -33,15 +33,25 @@ git remote add origin git@github.com:phasenexa/phasenexa.github.io.git
 git push -u origin main
 ```
 
-## 3. Add the Anthropic API key secret
+## 3. Add the Claude Code OAuth token secret
 
-This is needed for both the `build.yml` (Claude Code content updates) and `claude.yml` (@claude mentions) workflows.
+This is needed for both the `build.yml` (Claude Code content updates) and `claude.yml` (@claude mentions) workflows. It uses your Claude Pro/Max subscription credits rather than a separate API budget.
+
+First, generate the token locally:
+
+```bash
+claude setup-token
+```
+
+Then add it to your repo:
 
 1. Go to **Settings > Secrets and variables > Actions**
 2. Click **New repository secret**
-3. Name: `ANTHROPIC_API_KEY`
-4. Value: your Anthropic API key
+3. Name: `CLAUDE_CODE_OAUTH_TOKEN`
+4. Value: the token from `claude setup-token`
 5. Click **Add secret**
+
+Note: OAuth tokens expire. If workflows start failing with auth errors, regenerate the token with `claude setup-token` and update the secret.
 
 ## 4. Run the build workflow
 
@@ -80,13 +90,17 @@ To enable this, edit `.github/workflows/build.yml` and add to the Retype build s
     RETYPE_KEY: ${{ secrets.RETYPE_KEY }}
 ```
 
-## 7. Optional: Install Claude GitHub App
+## 7. Optional: Install Claude GitHub App (alternative to steps 3)
 
-For the `@claude` mention workflow to work fully:
+Instead of manually creating the OAuth token, you can do the whole setup from Claude Code:
 
-1. Install the Claude GitHub App: [github.com/apps/claude](https://github.com/apps/claude)
-2. Grant it access to the `phasenexa.github.io` repository
-3. Alternatively, the `claude.yml` workflow uses `anthropics/claude-code-action@v1` with your API key, which works without the app
+```bash
+claude /install-github-app
+```
+
+This walks you through installing the Claude GitHub App, generates the token, and creates the workflow files. It will set up the `CLAUDE_CODE_OAUTH_TOKEN` secret automatically.
+
+If you prefer manual control, steps 3 above works fine.
 
 ## Branch protection (recommended)
 
