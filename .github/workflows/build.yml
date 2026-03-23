@@ -99,6 +99,9 @@ jobs:
       # ---------------------------------------------------------------
       # Build with Retype
       # ---------------------------------------------------------------
+      - name: Remove cloned repos before build
+        run: rm -rf .repos
+
       - name: Build Retype website
         uses: retypeapp/action-build@latest
 
