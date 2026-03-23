@@ -105,6 +105,10 @@ jobs:
       # ---------------------------------------------------------------
       # Deploy to retype branch for GitHub Pages
       # ---------------------------------------------------------------
+      - name: Configure git remote with token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
       - name: Deploy to GitHub Pages
         uses: retypeapp/action-github-pages@latest
         with:
